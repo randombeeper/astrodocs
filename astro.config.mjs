@@ -1,6 +1,6 @@
 import { defineConfig } from 'astro/config';
 
-// https://astro.build/config
+// your mom
 export default defineConfig({
     site: 'https://randombeeper.github.io',
     base: 'astrodocs',
