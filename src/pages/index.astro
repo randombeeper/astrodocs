@@ -1,20 +1,32 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Card from '../components/Card.astro';
 
 const apiConfigurations = [
-  {
-	url: 'https://randombeeper.github.io/JamesDevDocsSrc/',
-    appId: '7KX1KKVYQZ',
-    apiKey: '11c3cc057560ae8269998fc74e263147',
-    indexName: 'randombeeperio'
-  },
-  {
-	url: 'https://randombeeper.github.io/starlight/',
-    appId: 'JDT8AI1ORL',
-    apiKey: 'ae645a56b5d7c1a7d787027b50abe9d0',
-    indexName: 'randombeeperio'
-  },
+	{
+		url: 'https://docs.cortex.io/',
+		appId: '3ZAQCSL5V0',
+		apiKey: '69aa153f53e4a4f9fa490742464716e2',
+		indexName: 'cortex'
+	},
+	{
+		url: 'https://airflow.apache.org/docs/apache-airflow/stable/',
+		appId: '82VLS1TU5K',
+		apiKey: 'bfdc9eff848b16b6167efaa4a84d5e27',
+		indexName: 'othersites',
+		sitename: 'apacheairflow'
+	},
+	{
+		url: 'https://randombeeper.github.io/JamesDevDocsSrc/',
+		appId: '7KX1KKVYQZ',
+		apiKey: '11c3cc057560ae8269998fc74e263147',
+		indexName: 'randombeeperio'
+	},
+	{
+		url: 'https://randombeeper.github.io/starlight/',
+		appId: 'JDT8AI1ORL',
+		apiKey: 'ae645a56b5d7c1a7d787027b50abe9d0',
+		indexName: 'randombeeperio'
+	},
 ];
 
 const jsonApiConfigurations = JSON.stringify(apiConfigurations);
@@ -24,6 +36,7 @@ const jsonApiConfigurations = JSON.stringify(apiConfigurations);
 <Layout title="Algolia DocSearch Results">
 	<main>
 		<h1>Algolia DocSearch Results</h1>
+		the other page: <a href="/astrodocs/reacttest">other page</a>.
 		<p class="instructions">
 			Search:
 			<select name="selectedurl" id="selectedurl">
@@ -36,8 +49,9 @@ const jsonApiConfigurations = JSON.stringify(apiConfigurations);
 		</p>
 		<div id="docsearch"></div>
 
-		<!-- docsearchjs -->
+		<!-- docsearchjs - I npm installed this to see if I can get it to work that way -->
 		<script is:inline src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"/>
+
 		<!-- Inject the data as a hidden JSON string in the HTML -->
 		<script is:inline id="api-configurations" type="application/json" set:html={jsonApiConfigurations}/>
 
@@ -51,11 +65,19 @@ const jsonApiConfigurations = JSON.stringify(apiConfigurations);
 				const selectedValue = event.target.value;
 				console.log('Selected URL:', selectedValue);
 
+				theFacetFilters = [];
+				if( apiConfigurations[selectedValue].sitename ){
+					theFacetFilters = ['sitename:' + apiConfigurations[selectedValue].sitename]
+				}
+
 				docsearch({
 					appId: apiConfigurations[selectedValue].appId,
 					apiKey: apiConfigurations[selectedValue].apiKey,
 					indexName: apiConfigurations[selectedValue].indexName,
 					container: "#docsearch",
+					searchParameters: {						
+						facetFilters: theFacetFilters,
+					},
 					debug: false 
 				});
 			}
